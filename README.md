@@ -31,6 +31,15 @@
   </tr>
 </table>
 
+
+## Documentação
+
+| Documento | Descrição |
+|-----------|-----------|
+| [docs/uso-query-graphql.md](docs/uso-query-graphql.md) | Como executar a query GraphQL via `gh` CLI ou requisição HTTP |
+
+---
+
 ## Descrição
 
 Este laboratório tem como objetivo estudar as principais características de sistemas populares open-source hospedados no GitHub. Por meio da API GraphQL do GitHub, serão coletados dados dos **1.000 repositórios com maior número de estrelas** para responder às seguintes questões de pesquisa:

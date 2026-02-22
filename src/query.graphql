@@ -1,0 +1,33 @@
+query($cursor: String) {
+  search(query: "stars:>1000 sort:stars-desc", type: REPOSITORY, first: 25, after: $cursor) {
+    pageInfo {
+      endCursor
+      hasNextPage
+    }
+    edges {
+      node {
+        ... on Repository {
+          name
+          url
+          createdAt # RQ 01
+          updatedAt # RQ 04
+          primaryLanguage { # RQ 05
+            name
+          }
+          releases(first: 1) {
+            totalCount # RQ 03
+          }
+          pullRequests(first: 1, states: MERGED) {
+            totalCount # RQ 02
+          }
+          openIssues: issues(first: 1, states: OPEN) { # RQ 06
+            totalCount
+          }
+          closedIssues: issues(first: 1, states: CLOSED) { # RQ 06
+            totalCount
+          }
+        }
+      }
+    }
+  }
+}
