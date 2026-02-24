@@ -1,5 +1,5 @@
 query($cursor: String) {
-  search(query: "stars:>1000 sort:stars-desc", type: REPOSITORY, first: 25, after: $cursor) {
+  search(query: "stars:>1000 sort:stars-desc", type: REPOSITORY, first: 10, after: $cursor) {
     pageInfo {
       endCursor
       hasNextPage
@@ -9,6 +9,7 @@ query($cursor: String) {
         ... on Repository {
           name
           url
+          stargazerCount # RQ stars
           createdAt # RQ 01
           updatedAt # RQ 04
           primaryLanguage { # RQ 05
