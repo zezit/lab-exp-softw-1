@@ -4,14 +4,8 @@ import json
 import requests
 from dotenv import load_dotenv
 
-# ---------------------------------------------------------------------------
-# Configuração
-# ---------------------------------------------------------------------------
-
-# Carrega variáveis de ambiente do arquivo .env
 load_dotenv()
 
-# Usar token do GitHub CLI ou variável de ambiente
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
 GITHUB_API_URL = "https://api.github.com/graphql"
 
@@ -39,7 +33,6 @@ def fetch_repositories():
     
     print("🚀 Iniciando coleta de 100 repositórios (10 por vez)...")
     
-    # 10 páginas de 10 = 100 repositórios
     for page in range(10):
         print(f"\n📄 Coletando página {page + 1}/10...")
         
@@ -85,7 +78,6 @@ def fetch_repositories():
         print(f"✅ Coletados {len(repos_this_page)} repositórios desta página")
         print(f"📊 Total acumulado: {len(all_repos)} repositórios")
         
-        # Verificar se tem próxima página
         if not search_results["pageInfo"]["hasNextPage"]:
             print("⚠️  Não há mais páginas disponíveis")
             break
@@ -113,7 +105,6 @@ def print_repositories(repos):
         print(f"     Issues abertas: {repo['open_issues']:,}")
         print(f"     Issues fechadas: {repo['closed_issues']:,}")
         
-        # Separador a cada 10 repos para melhor visualização
         if i % 10 == 0 and i < len(repos):
             print(f"\n{'-'*50} [{i} de {len(repos)}] {'-'*50}")
 
@@ -124,7 +115,6 @@ def print_summary(repos):
     print(f"📈 RESUMO ESTATÍSTICO")
     print(f"="*80)
     
-    # Contar linguagens
     languages = {}
     for repo in repos:
         lang = repo['primaryLanguage']
@@ -134,7 +124,6 @@ def print_summary(repos):
     for lang, count in sorted(languages.items(), key=lambda x: x[1], reverse=True)[:10]:
         print(f"   {lang}: {count} repositórios")
     
-    # Totais
     total_releases = sum(repo['releases_count'] for repo in repos)
     total_prs = sum(repo['pullRequests_count'] for repo in repos)
     total_open_issues = sum(repo['open_issues'] for repo in repos)
@@ -151,17 +140,14 @@ def main() -> None:
     """Ponto de entrada - coleta e printa os 100 repositórios."""
     
     try:
-        # Buscar os repositórios
         repos = fetch_repositories()
         
         if not repos:
             print("❌ Nenhum repositório foi coletado!")
             return
         
-        # Printar todos os repositórios
         print_repositories(repos)
         
-        # Printar resumo
         print_summary(repos)
         
         print(f"\n🎉 Processo concluído! {len(repos)} repositórios processados.")

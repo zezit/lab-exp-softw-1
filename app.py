@@ -1,5 +1,4 @@
 import sys
-# Importando os módulos da pasta src
 from src import collect_with_cli
 from src import fetch_repos
 
