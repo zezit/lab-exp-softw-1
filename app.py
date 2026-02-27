@@ -14,7 +14,7 @@ def display_menu():
     print("\n  [0] Sair")
     print("-" * 60)
 
-def main():
+def main(save_json=False):
     while True:
         display_menu()
         choice = input("\n👉 Digite o número da opção desejada: ").strip()
@@ -23,14 +23,14 @@ def main():
             print("\n" + "=" * 40)
             print("Iniciando coleta via GitHub CLI...")
             print("=" * 40 + "\n")
-            collect_with_cli.main()
+            collect_with_cli.main(save_json=save_json)
             break
             
         elif choice == '2':
             print("\n" + "=" * 40)
             print("Iniciando coleta via Requisição Direta (API)...")
             print("=" * 40 + "\n")
-            fetch_repos.main()
+            fetch_repos.main(save_json=save_json)
             break
             
         elif choice == '0':
@@ -41,8 +41,10 @@ def main():
             print("\n❌ Opção inválida! Por favor, digite 1, 2 ou 0.\n")
 
 if __name__ == "__main__":
+    save_json = "--json" in sys.argv
+    
     try:
-        main()
+        main(save_json=save_json)
     except KeyboardInterrupt:
         print("\n\n⚠️ Execução interrompida pelo usuário. Saindo...")
         sys.exit(0)

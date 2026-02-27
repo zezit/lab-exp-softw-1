@@ -32,8 +32,9 @@ htmlcov/
 *.swp
 *.swo
 
-# Dados coletados (não versionar CSVs grandes)
+# Dados coletados (não versionar CSVs e JSONs)
 data/*.csv
+data/*.json
 
 # macOS
 .DS_Store

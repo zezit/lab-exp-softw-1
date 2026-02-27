@@ -18,7 +18,7 @@ def run_gh_query(cursor):
     result = subprocess.run(cmd, capture_output=True, text=True)
     return json.loads(result.stdout)
 
-def main():
+def main(save_json=False):
     if not QUERY_FILE.exists():
         print(f"❌ Erro: O arquivo não foi encontrado em {QUERY_FILE}")
         return
@@ -55,12 +55,15 @@ def main():
     
     print(f"\nTotal: {len(all_repos)} repositórios coletados!")
     
-    DATA_DIR.mkdir(parents=True, exist_ok=True)
-    output_file = DATA_DIR / 'repos.json'
-    
-    with open(output_file, 'w', encoding='utf-8') as f:
-        json.dump(all_repos, f, indent=2)
-    print(f"✅ Dados salvos em {output_file}")
+    if save_json:
+        DATA_DIR.mkdir(parents=True, exist_ok=True)
+        output_file = DATA_DIR / 'repos.json'
+        
+        with open(output_file, 'w', encoding='utf-8') as f:
+            json.dump(all_repos, f, indent=2)
+        print(f"✅ Dados salvos em {output_file}")
+    else:
+        print("ℹ️  Use --json para salvar os dados em JSON")
 
 if __name__ == "__main__":
     main()

@@ -136,7 +136,7 @@ def print_summary(repos):
     print(f"   Issues fechadas: {total_closed_issues:,}")
     print(f"   Total de issues: {total_open_issues + total_closed_issues:,}")
 
-def main() -> None:
+def main(save_json=False) -> None:
     """Entry point - collects and prints 100 repositories."""
     
     try:
@@ -149,6 +149,26 @@ def main() -> None:
         print_repositories(repos)
         
         print_summary(repos)
+        
+        if save_json:
+            data_dir = pathlib.Path(__file__).parent.parent / "data"
+            data_dir.mkdir(parents=True, exist_ok=True)
+            output_file = data_dir / "repos.json"
+            
+            repos_json = []
+            for repo in repos:
+                repos_json.append({
+                    "name": repo["name"],
+                    "stars": repo["stargazerCount"],
+                    "language": repo["primaryLanguage"],
+                    "url": repo["url"]
+                })
+            
+            with open(output_file, 'w', encoding='utf-8') as f:
+                json.dump(repos_json, f, indent=2)
+            print(f"\n✅ Dados salvos em {output_file}")
+        else:
+            print("\nℹ️  Use --json para salvar os dados em JSON")
         
         print(f"\n🎉 Processo concluído! {len(repos)} repositórios processados.")
         
