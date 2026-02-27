@@ -2,7 +2,7 @@ import sys
 from src import collect_with_cli
 from src import fetch_repos
 
-def exibir_menu():
+def display_menu():
     print("=" * 60)
     print(" 🚀 LABORATÓRIO 01 - COLETOR DE REPOSITÓRIOS GITHUB ")
     print("=" * 60)
@@ -16,24 +16,24 @@ def exibir_menu():
 
 def main():
     while True:
-        exibir_menu()
-        escolha = input("\n👉 Digite o número da opção desejada: ").strip()
+        display_menu()
+        choice = input("\n👉 Digite o número da opção desejada: ").strip()
 
-        if escolha == '1':
+        if choice == '1':
             print("\n" + "=" * 40)
             print("Iniciando coleta via GitHub CLI...")
             print("=" * 40 + "\n")
             collect_with_cli.main()
             break
             
-        elif escolha == '2':
+        elif choice == '2':
             print("\n" + "=" * 40)
             print("Iniciando coleta via Requisição Direta (API)...")
             print("=" * 40 + "\n")
             fetch_repos.main()
             break
             
-        elif escolha == '0':
+        elif choice == '0':
             print("\n👋 Encerrando o programa. Até logo!")
             sys.exit(0)
             

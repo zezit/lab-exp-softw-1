@@ -10,13 +10,13 @@ GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
 GITHUB_API_URL = "https://api.github.com/graphql"
 
 def load_query():
-    """Carrega a query GraphQL do arquivo."""
+    """Loads the GraphQL query from file."""
     query_path = pathlib.Path(__file__).parent / "query.graphql"
     with open(query_path, 'r') as f:
         return f.read()
 
 def fetch_repositories():
-    """Busca 100 repositórios usando a query paginada (10 em 10)."""
+    """Fetches 100 repositories using paginated query (10 per page)."""
     
     if not GITHUB_TOKEN:
         print("❌ GITHUB_TOKEN não encontrado. Configure o arquivo .env")
@@ -87,7 +87,7 @@ def fetch_repositories():
     return all_repos
 
 def print_repositories(repos):
-    """Printa os repositórios no terminal conforme solicitado."""
+    """Prints the repositories to terminal as requested."""
     
     print(f"\n" + "="*80)
     print(f"🎯 REPOSITÓRIOS COLETADOS - TOTAL: {len(repos)}")
@@ -109,7 +109,7 @@ def print_repositories(repos):
             print(f"\n{'-'*50} [{i} de {len(repos)}] {'-'*50}")
 
 def print_summary(repos):
-    """Printa um resumo estatístico."""
+    """Prints statistical summary."""
     
     print(f"\n" + "="*80)
     print(f"📈 RESUMO ESTATÍSTICO")
@@ -137,7 +137,7 @@ def print_summary(repos):
     print(f"   Total de issues: {total_open_issues + total_closed_issues:,}")
 
 def main() -> None:
-    """Ponto de entrada - coleta e printa os 100 repositórios."""
+    """Entry point - collects and prints 100 repositories."""
     
     try:
         repos = fetch_repositories()
