@@ -31,7 +31,6 @@
   </tr>
 </table>
 
-
 ## Documentação
 
 | Documento | Descrição |
@@ -56,7 +55,6 @@ Este laboratório tem como objetivo estudar as principais características de si
 
 ---
 
-
 ## Entregas
 
 ### Lab01S01 — Consulta GraphQL + Requisição Automática *(3 pontos)*
@@ -77,27 +75,80 @@ Este laboratório tem como objetivo estudar as principais características de si
 
 ## Configuração do Ambiente
 
-### Pré-requisitos
+### Pré-requisitos Gerais
 
-- Python 3.10+
-- Token de acesso pessoal do GitHub (com permissão de leitura pública)
+- **Python 3.10+**
+- **Git**
 
-### Instalação
+O projeto possui dois métodos de coleta diferentes. Dependendo da sua escolha, você precisará de:
+* **Para o Método 1:** [GitHub CLI (`gh`)](https://cli.github.com/) instalado na máquina.
+* **Para o Método 2:** Um Personal Access Token (PAT) do GitHub (Classic) com permissão de leitura pública.
+
+### Instalação e Preparação
 
 ```bash
-# Clone o repositório
+# 1. Clone o repositório
 git clone <url-do-repositório>
 cd <nome-do-repositório>
 
-# Crie e ative um ambiente virtual
+# 2. Crie e ative um ambiente virtual
 python -m venv .venv
-source .venv/bin/activate   # Linux/macOS
-.venv\Scripts\activate      # Windows
+# Linux/macOS:
+source .venv/bin/activate
+# Windows:
+.venv\Scripts\activate
 
-# Instale as dependências
+# 3. Instale as dependências do projeto (requests, python-dotenv, etc.)
 pip install -r requirements.txt
 
-# Configure as variáveis de ambiente
+```
+
+---
+
+## Como Executar
+
+Para facilitar o uso, centralizamos a execução no arquivo `app.py`. A partir dele, um menu interativo permitirá escolher qual método de coleta você deseja utilizar.
+
+No terminal (com o ambiente virtual ativado), na raiz do projeto, execute:
+
+```bash
+python app.py
+
+```
+
+### Configurações Específicas por Método
+
+Antes de escolher a opção no menu, certifique-se de ter configurado o método desejado:
+
+#### Opção 1: GitHub CLI (`gh`)
+
+Este método utiliza sub-processos do Python para chamar comandos do GitHub CLI local.
+
+* **Requisito:** É obrigatório ter o GitHub CLI instalado na sua máquina.
+* **Autenticação:** Antes de rodar, abra o terminal e faça login digitando:
+```bash
+gh auth login
+
+```
+
+
+*(Siga os passos na tela para se autenticar pelo navegador).*
+
+#### Opção 2: Requisição Direta à API (Requests) - *Recomendado*
+
+Este método faz chamadas HTTP diretas pelo Python, dispensando a instalação do GitHub CLI.
+
+* **Requisito:** Necessita de um token de acesso pessoal do GitHub e da biblioteca `python-dotenv`.
+* **Autenticação:**
+1. Crie uma cópia do arquivo `.env.example` e renomeie para `.env`:
+```bash
 cp .env.example .env
-# Edite o arquivo .env e adicione seu token do GitHub
+
+```
+
+
+2. Abra o arquivo `.env` e adicione o seu token (sem aspas ou espaços):
+```text
+GITHUB_TOKEN=seu_token_aqui_ghp_xxxxxxxxxxxxxxxxx
+
 ```
