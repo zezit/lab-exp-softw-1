@@ -1,12 +1,15 @@
 import os
 import pathlib
 import json
-
 import requests
+from dotenv import load_dotenv
 
 # ---------------------------------------------------------------------------
 # Configuração
 # ---------------------------------------------------------------------------
+
+# Carrega variáveis de ambiente do arquivo .env
+load_dotenv()
 
 # Usar token do GitHub CLI ou variável de ambiente
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
