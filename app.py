@@ -1,6 +1,5 @@
 import sys
-from src import collect_with_cli
-from src import fetch_repos
+from src.repository_manager import RepositoryManager, main as manager_main
 
 def display_menu():
     print("=" * 60)
@@ -23,14 +22,14 @@ def main(save_json=False):
             print("\n" + "=" * 40)
             print("Iniciando coleta via GitHub CLI...")
             print("=" * 40 + "\n")
-            collect_with_cli.main(save_json=save_json)
+            manager_main(method='cli', save_json=save_json)
             break
             
         elif choice == '2':
             print("\n" + "=" * 40)
             print("Iniciando coleta via Requisição Direta (API)...")
             print("=" * 40 + "\n")
-            fetch_repos.main(save_json=save_json)
+            manager_main(method='http', save_json=save_json)
             break
             
         elif choice == '0':
