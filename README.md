@@ -140,15 +140,105 @@ Este método faz chamadas HTTP diretas pelo Python, dispensando a instalação d
 
 * **Requisito:** Necessita de um token de acesso pessoal do GitHub e da biblioteca `python-dotenv`.
 * **Autenticação:**
-1. Crie uma cópia do arquivo `.env.example` e renomeie para `.env`:
+  1. Crie uma cópia do arquivo `.env.example` e renomeie para `.env`:
+  ```bash
+  cp .env.example .env
+  ```
+  
+  2. Abra o arquivo `.env` e adicione o seu token (sem aspas ou espaços):
+  ```text
+  GITHUB_TOKEN=seu_token_aqui_ghp_xxxxxxxxxxxxxxxxx
+  ```
+  
+  3. **Como obter um token do GitHub:**
+     - Acesse [GitHub Settings → Developer settings → Personal access tokens](https://github.com/settings/tokens)
+     - Clique em "Generate new token (classic)"
+     - Dê um nome descritivo (ex: "Lab01-Token")
+     - Selecione o escopo `public_repo` (leitura de repositórios públicos)
+     - Clique em "Generate token" e copie o valor (aparece apenas uma vez)
+     - Guarde-o com segurança e nunca o compartilhe
+
+---
+
+## Estrutura do Projeto
+
+```
+.
+├── app.py                          # Menu principal de execução
+├── requirements.txt                # Dependências Python
+├── README.md                       # Este arquivo
+├── data/                         # Pasta para dados brutos
+├── docs/
+│   └── uso-query-graphql.md      # Documentação técnica da query GraphQL
+├── reports/
+│   └── figures/                   # Gráficos e visualizações (gerados na S03)
+└── src/
+    ├── query.graphql             # Query GraphQL para busca de repositórios
+    ├── repository_manager.py      # Gerenciador principal
+    ├── repository_fetcher_cli.py # Implementação do método GitHub CLI
+    ├── repository_fetcher_http.py # Implementação do método HTTP
+    ├── interfaces/
+    │   └── repository_fetcher.py  # Interface abstrata dos fetchers
+    └── utils/
+        └── output_formatter.py    # Formatação e exibição dos resultados
+```
+
+---
+
+## Fluxo de Execução
+
+1. **Menu Interativo** (`app.py`): Escolha de 1 a 2 como método de coleta
+2. **Gerenciador** (`repository_manager.py`): Coordena a coleta de dados
+3. **Fetcher** (`*_fetcher_*.py`): Executa a coleta via CLI ou HTTP
+4. **Formatação** (`output_formatter.py`): Exibe resultados no console
+5. **Salvamento**: Dados opcionalmente salvos em `data/repos.json`
+
+---
+
+## Coletando os Dados
+
+### Opção 1: Via GitHub CLI
 ```bash
-cp .env.example .env
-
+python app.py
+# Digite: 1
 ```
+**Vantagem:** Simples, sem necessidade de gerenciar tokens  
+**Desvantagem:** Requer instalação do GitHub CLI
 
-
-2. Abra o arquivo `.env` e adicione o seu token (sem aspas ou espaços):
-```text
-GITHUB_TOKEN=seu_token_aqui_ghp_xxxxxxxxxxxxxxxxx
-
+### Opção 2: Via Requisição HTTP
+```bash
+python app.py
+# Digite: 2
 ```
+**Vantagem:** Funciona em qualquer lugar com Internet  
+**Desvantagem:** Requer configuração do arquivo `.env`
+
+### Salvando em JSON
+Para salvar os dados coletados num arquivo JSON:
+```bash
+python app.py --json
+```
+Os dados serão salvos em `data/repos.json`.
+
+---
+
+## Troubleshooting
+
+### Erro: `GITHUB_TOKEN not found in .env`
+- Verifique se o arquivo `.env` existe na raiz do projeto
+- Certifique-se de que contém: `GITHUB_TOKEN=seu_token_aqui`
+- Não use aspas nem espaços ao redor do valor
+
+### Erro: `gh: command not found`
+- O GitHub CLI não está instalado. Instale-o em [cli.github.com](https://cli.github.com/)
+- Ou escolha a opção 2 (Requisição HTTP) no menu
+
+### Erro: `401 Unauthorized` na opção 2
+- Seu token do GitHub é inválido ou expirou
+- Crie um novo token em [github.com/settings/tokens](https://github.com/settings/tokens)
+- Substitua o valor em `.env` e tente novamente
+
+### O programa não exibe os dados
+- Verifique sua conexão com a Internet
+- Verifique se o GitHub está acessível (às vezes há downtime)
+- Tente fazer a requisição manualmente conforme explicado em [docs/uso-query-graphql.md](docs/uso-query-graphql.md)
