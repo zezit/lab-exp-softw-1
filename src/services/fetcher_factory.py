@@ -1,0 +1,26 @@
+from typing import Literal, Dict, Type
+from ..interfaces.repository_fetcher import RepositoryFetcher
+from ..infrastructure.fetchers.http_repository_fetcher import HttpRepositoryFetcher
+from ..infrastructure.fetchers.cli_repository_fetcher import CliRepositoryFetcher
+
+class RepositoryFetcherFactory:
+    _FETCHERS: Dict[str, Type[RepositoryFetcher]] = {
+        'http': HttpRepositoryFetcher,
+        'cli': CliRepositoryFetcher,
+    }
+
+    @classmethod
+    def create(cls, method: str) -> RepositoryFetcher:
+        fetcher_class = cls._FETCHERS.get(method.lower())
+        
+        if not fetcher_class:
+            available = list(cls._FETCHERS.keys())
+            raise ValueError(f"Método '{method}' não suportado. Escolha entre: {available}")
+        
+        # Aqui a Factory poderia resolver tokens de ambiente ou 
+        # checar dependências antes de instanciar.
+        return fetcher_class()
+
+    @classmethod
+    def get_available_methods(cls):
+        return list(cls._FETCHERS.keys())
