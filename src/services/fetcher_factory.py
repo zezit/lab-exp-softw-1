@@ -17,8 +17,7 @@ class RepositoryFetcherFactory:
             available = list(cls._FETCHERS.keys())
             raise ValueError(f"Método '{method}' não suportado. Escolha entre: {available}")
         
-        # Aqui a Factory poderia resolver tokens de ambiente ou 
-        # checar dependências antes de instanciar.
+        # Factory could resolve environment tokens or check dependencies before instantiation
         return fetcher_class()
 
     @classmethod

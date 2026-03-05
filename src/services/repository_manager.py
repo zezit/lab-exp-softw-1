@@ -4,7 +4,6 @@ from ..utils.output_formatter import RepositoryOutputFormatter
 
 class RepositoryManager:
     def __init__(self, fetcher: RepositoryFetcher):
-        # Dependency Injection: O manager não sabe 'como' o fetcher foi criado
         self.fetcher = fetcher
         self.output = RepositoryOutputFormatter()
     

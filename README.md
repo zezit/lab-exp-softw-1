@@ -107,12 +107,12 @@ pip install -r requirements.txt
 
 ## Como Executar
 
-Para facilitar o uso, centralizamos a execução no arquivo `app.py`. A partir dele, um menu interativo permitirá escolher qual método de coleta você deseja utilizar.
+Para facilitar o uso, centralizamos a execução no arquivo `src/app.py`. A partir dele, um menu interativo permitirá escolher qual método de coleta você deseja utilizar.
 
 No terminal (com o ambiente virtual ativado), na raiz do projeto, execute:
 
 ```bash
-python app.py
+python src/app.py
 
 ```
 
@@ -164,7 +164,6 @@ Este método faz chamadas HTTP diretas pelo Python, dispensando a instalação d
 
 ```
 .
-├── app.py                          # Menu principal de execução
 ├── requirements.txt                # Dependências Python
 ├── README.md                       # Este arquivo
 ├── data/                         # Pasta para dados brutos
@@ -173,12 +172,17 @@ Este método faz chamadas HTTP diretas pelo Python, dispensando a instalação d
 ├── reports/
 │   └── figures/                   # Gráficos e visualizações (gerados na S03)
 └── src/
-    ├── query.graphql             # Query GraphQL para busca de repositórios
-    ├── repository_manager.py      # Gerenciador principal
-    ├── repository_fetcher_cli.py # Implementação do método GitHub CLI
-    ├── repository_fetcher_http.py # Implementação do método HTTP
+    ├── app.py                      # Menu principal de execução
+    ├── services/
+    │   ├── repository_manager.py  # Gerenciador principal
+    │   └── fetcher_factory.py     # Fábrica de fetchers
     ├── interfaces/
     │   └── repository_fetcher.py  # Interface abstrata dos fetchers
+    ├── infrastructure/
+    │   ├── fetchers/
+    │   │   ├── http_repository_fetcher.py # HTTP fetcher
+    │   │   └── cli_repository_fetcher.py  # CLI fetcher
+    │   └── graphql/query.graphql        # Consulta GraphQL
     └── utils/
         └── output_formatter.py    # Formatação e exibição dos resultados
 ```
@@ -187,7 +191,7 @@ Este método faz chamadas HTTP diretas pelo Python, dispensando a instalação d
 
 ## Fluxo de Execução
 
-1. **Menu Interativo** (`app.py`): Escolha de 1 a 2 como método de coleta
+1. **Menu Interativo** (`src/app.py`): Escolha de 1 a 2 como método de coleta
 2. **Gerenciador** (`repository_manager.py`): Coordena a coleta de dados
 3. **Fetcher** (`*_fetcher_*.py`): Executa a coleta via CLI ou HTTP
 4. **Formatação** (`output_formatter.py`): Exibe resultados no console
@@ -199,7 +203,7 @@ Este método faz chamadas HTTP diretas pelo Python, dispensando a instalação d
 
 ### Opção 1: Via GitHub CLI
 ```bash
-python app.py
+python src/app.py
 # Digite: 1
 ```
 **Vantagem:** Simples, sem necessidade de gerenciar tokens  
@@ -207,7 +211,7 @@ python app.py
 
 ### Opção 2: Via Requisição HTTP
 ```bash
-python app.py
+python src/app.py
 # Digite: 2
 ```
 **Vantagem:** Funciona em qualquer lugar com Internet  
@@ -216,7 +220,7 @@ python app.py
 ### Salvando em JSON
 Para salvar os dados coletados num arquivo JSON:
 ```bash
-python app.py --json
+python src/app.py --json
 ```
 Os dados serão salvos em `data/repos.json`.
 

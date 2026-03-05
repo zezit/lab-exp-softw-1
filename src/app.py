@@ -9,7 +9,6 @@ def display_menu(options: list):
     print("=" * 60)
     print("\nEscolha o método de coleta:")
     
-    # Geramos o menu dinamicamente com base na Factory
     for i, method in enumerate(options, 1):
         label = "🐙 GitHub CLI (gh)" if method == 'cli' else "🌐 Requisição Direta (API)"
         print(f"  [{i}] {label}")
@@ -18,13 +17,12 @@ def display_menu(options: list):
     print("-" * 60)
 
 def run_collection(method: str, save_json: bool):
-    """Encapsula a execução para limpar o loop principal"""
+    """Encapsulates execution to keep main loop clean"""
     try:
         print("\n" + "=" * 40)
         print(f"Iniciando coleta via {method.upper()}...")
         print("=" * 40 + "\n")
         
-        # Uso da Factory + Manager conforme o novo padrão SOLID
         fetcher = RepositoryFetcherFactory.create(method)
         manager = RepositoryManager(fetcher)
         
@@ -35,7 +33,7 @@ def run_collection(method: str, save_json: bool):
         RepositoryOutputFormatter.print_error(f"Erro na execução: {e}")
 
 def main(save_json=False):
-    # Obtemos os métodos disponíveis na Factory (OCP na prática!)
+    # get available methods from the factory (OCP in practice)
     available_methods = RepositoryFetcherFactory.get_available_methods()
     
     while True:
@@ -49,7 +47,7 @@ def main(save_json=False):
         if choice.isdigit() and 1 <= int(choice) <= len(available_methods):
             selected_method = available_methods[int(choice) - 1]
             run_collection(selected_method, save_json)
-            break # Ou remova o break para permitir múltiplas coletas
+            break
         else:
             print(f"\n❌ Opção inválida! Digite de 1 a {len(available_methods)} ou 0.")
 
