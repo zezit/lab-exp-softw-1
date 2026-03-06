@@ -36,7 +36,7 @@
 | Documento | Descrição |
 |-----------|-----------|
 | [docs/uso-query-graphql.md](docs/uso-query-graphql.md) | Como executar a query GraphQL via `gh` CLI ou requisição HTTP |
-| [reports/relatorio-v1.md](reports/relatorio-v1.md) | Primeira versão do relatório com hipóteses informais |
+| [reports/relatorio-v1.pdf](reports/relatorio-v1.pdf) | Primeira versão do relatório com hipóteses informais |
 
 ---
 
@@ -121,43 +121,44 @@ python src/app.py
 
 Antes de escolher a opção no menu, certifique-se de ter configurado o método desejado:
 
-#### Opção 1: GitHub CLI (`gh`)
-
-Este método utiliza sub-processos do Python para chamar comandos do GitHub CLI local.
-
-* **Requisito:** É obrigatório ter o GitHub CLI instalado na sua máquina.
-* **Autenticação:** Antes de rodar, abra o terminal e faça login digitando:
-```bash
-gh auth login
-
-```
-
-
-*(Siga os passos na tela para se autenticar pelo navegador).*
-
-#### Opção 2: Requisição Direta à API (Requests) - *Recomendado*
+#### Opção 1: Requisição Direta à API (Requests) - *Recomendado*
 
 Este método faz chamadas HTTP diretas pelo Python, dispensando a instalação do GitHub CLI.
 
-* **Requisito:** Necessita de um token de acesso pessoal do GitHub e da biblioteca `python-dotenv`.
-* **Autenticação:**
+- **Requisito:** Necessita de um token de acesso pessoal do GitHub e da biblioteca `python-dotenv`.
+- **Autenticação:**
   1. Crie uma cópia do arquivo `.env.example` e renomeie para `.env`:
+
   ```bash
   cp .env.example .env
   ```
   
-  2. Abra o arquivo `.env` e adicione o seu token (sem aspas ou espaços):
+  1. Abra o arquivo `.env` e adicione o seu token (sem aspas ou espaços):
+
   ```text
   GITHUB_TOKEN=seu_token_aqui_ghp_xxxxxxxxxxxxxxxxx
   ```
   
-  3. **Como obter um token do GitHub:**
-     - Acesse [GitHub Settings → Developer settings → Personal access tokens](https://github.com/settings/tokens)
-     - Clique em "Generate new token (classic)"
-     - Dê um nome descritivo (ex: "Lab01-Token")
-     - Selecione o escopo `public_repo` (leitura de repositórios públicos)
-     - Clique em "Generate token" e copie o valor (aparece apenas uma vez)
-     - Guarde-o com segurança e nunca o compartilhe
+  1. **Como obter um token do GitHub:**
+    - Acesse [GitHub Settings → Developer settings → Personal access tokens](https://github.com/settings/tokens)
+    - Clique em "Generate new token (classic)"
+    - Dê um nome descritivo (ex: "Lab01-Token")
+    - Selecione o escopo `public_repo` (leitura de repositórios públicos)
+    - Clique em "Generate token" e copie o valor (aparece apenas uma vez)
+    - Guarde-o com segurança e nunca o compartilhe
+
+#### Opção 2: GitHub CLI (`gh`)
+
+Este método utiliza sub-processos do Python para chamar comandos do GitHub CLI local.
+
+- **Requisito:** É obrigatório ter o GitHub CLI instalado na sua máquina.
+- **Autenticação:** Antes de rodar, abra o terminal e faça login digitando:
+
+```bash
+gh auth login
+```
+
+*(Siga os passos na tela para se autenticar pelo navegador).*
 
 ---
 
@@ -202,21 +203,21 @@ Este método faz chamadas HTTP diretas pelo Python, dispensando a instalação d
 
 ## Coletando os Dados
 
-### Opção 1: Via GitHub CLI
+### Opção 1: Via Requisição HTTP
 ```bash
 python src/app.py
 # Digite: 1
 ```
-**Vantagem:** Simples, sem necessidade de gerenciar tokens  
-**Desvantagem:** Requer instalação do GitHub CLI
+**Vantagem:** Funciona em qualquer lugar com Internet  
+**Desvantagem:** Requer configuração do arquivo `.env`
 
-### Opção 2: Via Requisição HTTP
+### Opção 2: Via GitHub CLI
 ```bash
 python src/app.py
 # Digite: 2
 ```
-**Vantagem:** Funciona em qualquer lugar com Internet  
-**Desvantagem:** Requer configuração do arquivo `.env`
+**Vantagem:** Simples, sem necessidade de gerenciar tokens  
+**Desvantagem:** Requer instalação do GitHub CLI
 
 ### Salvando em JSON
 Para salvar os dados coletados num arquivo JSON:

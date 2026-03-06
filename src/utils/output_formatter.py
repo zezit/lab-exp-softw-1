@@ -105,7 +105,7 @@ class RepositoryOutputFormatter:
     @staticmethod
     def print_fetch_start(method: str, pages: int = 10) -> None:
         console = Console()
-        console.print(f"🚀 Iniciando coleta de {pages * 20} repositórios (20 por página, {pages} páginas)...", 
+        console.print(f"🚀 Iniciando coleta de {pages * 10} repositórios (10 por página, {pages} páginas)...", 
                      style="bold yellow")
         console.print(f"📡 Método: {method}", style="cyan")
     

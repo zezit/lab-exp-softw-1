@@ -16,7 +16,7 @@ class RepositoryFetcher(ABC):
         Fetch repositories and return standardized data.
         
         Args:
-            pages: number of pages to collect (100 repos each, so 10 pages = 1,000 repos)
+            pages: number of result pages to collect
             save_json: whether to persist data as JSON file
             save_csv: whether to persist data as CSV file
 
