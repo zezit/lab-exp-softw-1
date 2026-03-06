@@ -16,7 +16,7 @@ def display_menu(options: list):
     print("\n  [0] Sair")
     print("-" * 60)
 
-def run_collection(method: str, save_json: bool):
+def run_collection(method: str, save_json: bool, save_csv: bool):
     """Encapsulates execution to keep main loop clean"""
     try:
         print("\n" + "=" * 40)
@@ -26,13 +26,13 @@ def run_collection(method: str, save_json: bool):
         fetcher = RepositoryFetcherFactory.create(method)
         manager = RepositoryManager(fetcher)
         
-        repos = manager.fetch_repositories(pages=10, save_json=save_json)
+        repos = manager.fetch_repositories(pages=100, save_json=save_json, save_csv=save_csv)
         manager.display_results(repos)
         
     except Exception as e:
         RepositoryOutputFormatter.print_error(f"Erro na execução: {e}")
 
-def main(save_json=False):
+def main(save_json=False, save_csv=False):
     # get available methods from the factory (OCP in practice)
     available_methods = RepositoryFetcherFactory.get_available_methods()
     
@@ -46,15 +46,16 @@ def main(save_json=False):
             
         if choice.isdigit() and 1 <= int(choice) <= len(available_methods):
             selected_method = available_methods[int(choice) - 1]
-            run_collection(selected_method, save_json)
+            run_collection(selected_method, save_json, save_csv)
             break
         else:
             print(f"\n❌ Opção inválida! Digite de 1 a {len(available_methods)} ou 0.")
 
 if __name__ == "__main__":
-    should_save = "--json" in sys.argv
+    should_save_json = "--json" in sys.argv
+    should_save_csv = "--csv" in sys.argv
     try:
-        main(save_json=should_save)
+        main(save_json=should_save_json, save_csv=should_save_csv)
     except KeyboardInterrupt:
         print("\n\n⚠️ Interrompido pelo usuário. Saindo...")
         sys.exit(0)
