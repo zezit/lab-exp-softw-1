@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from pathlib import Path
 from typing import List, Dict, Any, Optional
+import csv
 import json
 import time
 
@@ -64,8 +65,8 @@ class BaseRepositoryFetcher(RepositoryFetcher):
     def __init__(self):
         self.output = RepositoryOutputFormatter()
         # Calculate project root by walking up from this file:
-        # src/interfaces -> src -> <repo_root>
-        self.base_path = Path(__file__).resolve().parent.parent
+        # repository_fetcher.py -> src/interfaces -> src -> <repo_root>
+        self.base_path = Path(__file__).resolve().parent.parent.parent
 
         # Paths for query and data directory
         self.query_file = (
@@ -88,7 +89,7 @@ class BaseRepositoryFetcher(RepositoryFetcher):
         all_repos: List[Dict[str, Any]] = []
         cursor = None
         
-        self.output.print_fetch_start(self.__class__.__name__)
+        self.output.print_fetch_start(self.__class__.__name__, pages)
 
         for page in range(1, pages + 1):
             data = self._execute_request(query_content, cursor)
@@ -149,12 +150,17 @@ class BaseRepositoryFetcher(RepositoryFetcher):
     def _save_json(self, repos: List[Dict[str, Any]]) -> None:
         self.data_dir.mkdir(parents=True, exist_ok=True)
         output_file = self.data_dir / 'repos.json'
-        
-        simplified = [
-            {"name": r["name"], "stars": r["stargazerCount"], 
-             "language": r["primaryLanguage"], "url": r["url"]} 
-            for r in repos
-        ]
-        
-        output_file.write_text(json.dumps(simplified, indent=2), encoding='utf-8')
+        output_file.write_text(json.dumps(repos, indent=2), encoding='utf-8')
+        self.output.print_save_success(str(output_file))
+
+    def _save_csv(self, repos: List[Dict[str, Any]]) -> None:
+        if not repos:
+            return
+        self.data_dir.mkdir(parents=True, exist_ok=True)
+        output_file = self.data_dir / 'repos.csv'
+        fieldnames = list(repos[0].keys())
+        with output_file.open('w', newline='', encoding='utf-8') as f:
+            writer = csv.DictWriter(f, fieldnames=fieldnames)
+            writer.writeheader()
+            writer.writerows(repos)
         self.output.print_save_success(str(output_file))
