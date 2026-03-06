@@ -11,13 +11,14 @@ from src.utils.output_formatter import RepositoryOutputFormatter
 class RepositoryFetcher(ABC):
     
     @abstractmethod
-    def fetch(self, pages: int = 10, save_json: bool = False) -> List[Dict[str, Any]]:
+    def fetch(self, pages: int = 10, save_json: bool = False, save_csv: bool = False) -> List[Dict[str, Any]]:
         """
         Fetch repositories and return standardized data.
         
         Args:
-            pages: number of pages of 100 repos to collect (10 per page)
-            save_json: whether to persist a simplified JSON file
+            pages: number of pages to collect (100 repos each, so 10 pages = 1,000 repos)
+            save_json: whether to persist data as JSON file
+            save_csv: whether to persist data as CSV file
 
         Returns:
             List of repository dictionaries with standardized keys:
@@ -84,7 +85,7 @@ class BaseRepositoryFetcher(RepositoryFetcher):
         """Each subclass implements its own communication mechanism."""
         pass
 
-    def fetch(self, pages: int = 10, save_json: bool = False) -> List[Dict[str, Any]]:
+    def fetch(self, pages: int = 10, save_json: bool = False, save_csv: bool = False) -> List[Dict[str, Any]]:
         query_content = self._get_query_content()
         all_repos: List[Dict[str, Any]] = []
         cursor = None
@@ -129,7 +130,10 @@ class BaseRepositoryFetcher(RepositoryFetcher):
             cursor = page_info.get('endCursor')
             time.sleep(0.5)
 
-        if save_json: self._save_json(all_repos)
+        if save_json:
+            self._save_json(all_repos)
+        if save_csv:
+            self._save_csv(all_repos)
         return all_repos
 
     def _parse_node(self, node: Dict[str, Any]) -> Dict[str, Any]:

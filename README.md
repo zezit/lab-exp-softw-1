@@ -36,6 +36,7 @@
 | Documento | Descrição |
 |-----------|-----------|
 | [docs/uso-query-graphql.md](docs/uso-query-graphql.md) | Como executar a query GraphQL via `gh` CLI ou requisição HTTP |
+| [reports/relatorio-v1.md](reports/relatorio-v1.md) | Primeira versão do relatório com hipóteses informais |
 
 ---
 
@@ -223,6 +224,18 @@ Para salvar os dados coletados num arquivo JSON:
 python src/app.py --json
 ```
 Os dados serão salvos em `data/repos.json`.
+
+### Salvando em CSV
+Para salvar os dados coletados num arquivo CSV:
+```bash
+python src/app.py --csv
+```
+Os dados serão salvos em `data/repos.csv`.
+
+### Salvando em JSON e CSV simultaneamente
+```bash
+python src/app.py --json --csv
+```
 
 ---
 
