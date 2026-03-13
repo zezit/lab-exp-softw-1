@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import List, Dict, Any, Optional
 import csv
@@ -56,6 +57,8 @@ class RepositoryFetcher(ABC):
             "pullRequests_count": repo.get("pullRequests_count", 0),
             "open_issues": repo.get("open_issues", 0),
             "closed_issues": repo.get("closed_issues", 0),
+            "mentionable_users_count": repo.get("mentionable_users_count", 0),
+            "collectedAt": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         }
 
 
@@ -93,15 +96,30 @@ class BaseRepositoryFetcher(RepositoryFetcher):
         self.output.print_fetch_start(self.__class__.__name__, pages)
 
         for page in range(1, pages + 1):
-            data = self._execute_request(query_content, cursor)
-            
-            if data is None:
-                self.output.print_error("Falha crítica: a resposta da API retornou None.")
+            max_retries = 5
+            data = None
+            for attempt in range(1, max_retries + 1):
+                data = self._execute_request(query_content, cursor)
+
+                if data is None:
+                    self.output.print_error(f"Resposta None (tentativa {attempt}/{max_retries})")
+                    if attempt < max_retries:
+                        time.sleep(2 ** attempt)
+                        continue
+                    break
+
+                if 'data' not in data or data.get('data') is None or data['data'].get('search') is None:
+                    err = data.get('errors', 'Resposta malformada ou erro de permissão')
+                    self.output.print_error(f"Erro na resposta (tentativa {attempt}/{max_retries}): {err}")
+                    if attempt < max_retries:
+                        time.sleep(2 ** attempt)
+                        continue
+                    break
+                # Success
                 break
 
-            if 'data' not in data or data.get('data') is None or data['data'].get('search') is None:
-                err = data.get('errors', 'Resposta malformada ou erro de permissão')
-                self.output.print_error(f"Erro na resposta: {err}")
+            if data is None or 'data' not in data or data.get('data') is None or data['data'].get('search') is None:
+                self.output.print_error("Falha após todas as tentativas. Encerrando coleta.")
                 break
 
             search_results = data['data']['search']
@@ -148,7 +166,8 @@ class BaseRepositoryFetcher(RepositoryFetcher):
             "releases_count": (node.get('releases') or {}).get('totalCount', 0),
             "pullRequests_count": (node.get('pullRequests') or {}).get('totalCount', 0),
             "open_issues": (node.get('openIssues') or {}).get('totalCount', 0),
-            "closed_issues": (node.get('closedIssues') or {}).get('totalCount', 0)
+            "closed_issues": (node.get('closedIssues') or {}).get('totalCount', 0),
+            "mentionable_users_count": (node.get('mentionableUsers') or {}).get('totalCount', 0),
         }
 
     def _save_json(self, repos: List[Dict[str, Any]]) -> None:
