@@ -324,24 +324,24 @@ Este estudo analisou os 1.000 repositórios mais populares do GitHub (coleta em 
 
 ## 5.4 Confronto com a literatura
 
-Os resultados empíricos obtidos neste estudo corroboram e atualizam diversas observações clássicas presentes na literatura de Mineração de Repositórios de Software (MSR), ao mesmo tempo em que destacam nuances emergentes do ecossistema atual do GitHub.
+Os resultados empíricos obtidos neste estudo corroboram e atualizam diversas observações presentes na literatura recente (2021–2026) de Engenharia de Software e Mineração de Repositórios de Software (MSR), refletindo o estado da arte do ecossistema do GitHub.
 
-Em primeiro lugar, a descoberta detalhada na Seção 4.1 — de que uma parcela considerável (10% a 15%) dos repositórios mais populares não consiste em projetos de desenvolvimento de software tradicionais, mas sim em iniciativas de curadoria de conhecimento (*awesome lists*, tutoriais e repositórios sem linguagem primária definida) — confirma empiricamente as ressalvas de Kalliamvakou et al. (2014) em seu trabalho *"The Promises and Perils of Mining GitHub"*. Os autores alertam estruturalmente sobre o perigo metodológico de assumir que todo repositório no topo do ranking equivale a um sistema de engenharia de software, exigindo cautela e filtragem na seleção de amostras para estudos da área.
+No que tange à maturidade e manutenção (RQ01 e RQ04), Ait, Izquierdo e Cabot (2022) investigaram a taxa de sobrevivência de projetos no GitHub, revelando que grande parte dos repositórios é abandonada em seu primeiro ano e que a probabilidade de sobrevivência a longo prazo é baixa, exigindo períodos ativos e contínuos de desenvolvimento. Nossos dados confirmam empiricamente essa dinâmica: os repositórios que alcançam o topo da popularidade são os "sobreviventes" de longo prazo desse ecossistema competitivo, apresentando uma impressionante mediana de idade de 8,33 anos e uma taxa de atualização quase unânime (98,7% atualizados no dia da coleta).
 
-No que tange à manutenção contínua, Borges et al. (2016), no artigo *"Understanding the Factors that Impact the Popularity of GitHub Repositories"*, apontam que a popularidade de um repositório está intrinsecamente atrelada à sua frequência de atualização. Os dados extraídos para responder à RQ04 validam de forma robusta essa premissa no cenário contemporâneo: 98,7% dos 1.000 repositórios analisados apresentaram atualizações no exato dia da coleta. Isso evidencia que a retenção de relevância (volume de estrelas) exige manutenção quase diária e gestão ativa por parte dos mantenedores.
+Em relação ao modelo de colaboração (RQ02 e RQ06), o trabalho de Zhang et al. (2022) fornece um panorama empírico amplo sobre o processamento de *Pull Requests*, destacando esse mecanismo e a gestão de *issues* como o motor central do desenvolvimento moderno em plataformas *pull-based*. A altíssima adoção evidenciada em nossa amostra (mediana de 738 PRs aceitas) e a forte capacidade de fechamento de *issues* (mediana de 87,88%) reforçam a conclusão de Zhang et al. de que ecossistemas populares dependem de uma triagem rigorosa e constante para manter a comunidade colaborativa engajada e reduzir a latência de integração.
 
-Por fim, a altíssima adoção do modelo de contribuição externa evidenciada na RQ02 (mediana de 738 *Pull Requests* aceitas por repositório) reforça as conclusões de Gousios et al. (2014) em *"Work Practices and Challenges in Pull-Based Development"*. O referencial teórico descreve como o modelo *pull-based* reduziu as barreiras de entrada para novos desenvolvedores. Os números consolidados nesta pesquisa atualizam essa visão, demonstrando que o modelo de *Pull Requests* não atua apenas como um facilitador, mas como o motor fundamental que sustenta a evolução, a triagem descentralizada e a escala colaborativa dos projetos open-source de maior impacto na atualidade.
+Por fim, a constatação da Seção 4.1 — de que 10% a 15% dos repositórios mais populares são focados em curadoria de conhecimento (como *awesome lists*) e não em engenharia de software tradicional — dialoga diretamente com os desafios metodológicos documentados na literatura contemporânea. Como apontado por Wessel et al. (2023) ao filtrarem rigorosamente repositórios para analisar o impacto de automações no processo de *Pull Requests*, assumir que qualquer repositório estrelado possui o mesmo perfil de desenvolvimento e ciclo de *releases* (RQ03) pode enviesar análises de engenharia de software. Nossos achados quantificam esse fenômeno no atual top 1.000, reiterando a necessidade premente de aplicar heurísticas de exclusão na seleção de amostras em estudos empíricos modernos.
 
 
 ---
 
 # Referências
 
-BORGES, H.; HORA, A.; VALENTE, M. T. Understanding the factors that impact the popularity of GitHub repositories. In: IEEE INTERNATIONAL CONFERENCE ON SOFTWARE MAINTENANCE AND EVOLUTION (ICSME), 32., 2016, Raleigh. **Proceedings** [...]. Raleigh: IEEE, 2016. p. 334-344.
+AIT, A.; IZQUIERDO, J. L. C.; CABOT, J. An empirical study on the survival rate of GitHub projects. In: INTERNATIONAL CONFERENCE ON MINING SOFTWARE REPOSITORIES (MSR), 19., 2022, Pittsburgh. **Proceedings** [...]. New York: ACM, 2022. p. 365-375.
 
-GOUSIOS, G. et al. Work practices and challenges in pull-based development: the contributor's perspective. In: INTERNATIONAL CONFERENCE ON SOFTWARE ENGINEERING (ICSE), 36., 2014, Hyderabad. **Proceedings** [...]. Hyderabad: ACM, 2014. p. 285-296.
+WESSEL, M. et al. GitHub Actions: The Impact on the Pull Request Process. **Empirical Software Engineering**, v. 28, n. 6, p. 1-38, 2023.
 
-KALLIAMVAKOU, E. et al. The promises and perils of mining GitHub. In: WORKING CONFERENCE ON MINING SOFTWARE REPOSITORIES (MSR), 11., 2014, Hyderabad. **Proceedings** [...]. Hyderabad: ACM, 2014. p. 92-101.
+ZHANG, X. et al. Pull request latency explained: an empirical overview. **Empirical Software Engineering**, v. 27, n. 6, p. 1-35, 2022.
 
 
 ---
