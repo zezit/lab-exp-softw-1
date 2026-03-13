@@ -126,6 +126,8 @@ Os resultados desta seção foram consolidados a partir dos **1.000 repositório
 
 ## 3.1 RQ01 — Sistemas populares são maduros/antigos?
 
+A análise da distribuição de idade confirma a Hipótese 1 (H1), revelando que a consolidação de um repositório no GitHub demanda tempo. Com uma mediana de 8,33 anos e o terceiro quartil atingindo 11,33 anos, fica evidente que o sucesso não é imediato. Projetos populares são, em sua esmagadora maioria, maduros, necessitando de quase uma década de desenvolvimento contínuo para construir uma base de usuários, estabelecer confiança e acumular a comunidade necessária para alcançar o topo do ranking.
+
 ### Estatísticas descritivas
 
 **Tabela 1 — Estatísticas descritivas da idade (em anos)**
@@ -145,6 +147,8 @@ Os resultados desta seção foram consolidados a partir dos **1.000 repositório
 
 ## 3.2 RQ02 — Sistemas populares recebem muita contribuição externa?
 
+A Hipótese 2 (H2) é fortemente validada pelos dados, visto que apenas 1,3% dos repositórios não possuem Pull Requests aceitas. A concentração de dados (mesmo em escala logarítmica) demonstra que a imensa maioria dos sistemas recebe um volume massivo de contribuições externas. Isso consolida a premissa de que o modelo descentralizado (pull-based development) não é apenas comum, mas um pilar essencial de escalabilidade e manutenção para repositórios de alto impacto.
+
 ### Estatísticas descritivas
 
 **Tabela 3 — Estatísticas descritivas de PRs aceitas**
@@ -160,6 +164,8 @@ Os resultados desta seção foram consolidados a partir dos **1.000 repositório
 ---
 
 ## 3.3 RQ03 — Sistemas populares lançam releases com frequência?
+
+A adoção de releases apresenta um comportamento polarizado que responde parcialmente à Hipótese 3 (H3). Enquanto a maior categoria é a de repositórios com "Muitas (100+)" releases (342 projetos, indicando fortes práticas de entrega contínua), um grupo expressivo de 295 repositórios não possui nenhuma release.
 
 ### Estatísticas descritivas
 
@@ -192,6 +198,8 @@ A distribuição de releases segmentada por linguagem revela que TypeScript e Go
 
 ## 3.4 RQ04 — Sistemas populares são atualizados com frequência?
 
+A Hipótese 4 (H4) é confirmada de forma contundente: o ecossistema de repositórios populares é extremamente dinâmico e ativamente mantido. Impressionantes 98,7% dos projetos apresentaram atualizações no mesmo dia da coleta (mediana de 0,0 dias), e todo o restante (1,3%) foi atualizado no intervalo de uma semana. Isso demonstra inequivocamente que a alta visibilidade na plataforma exige e reflete uma atividade ininterrupta de manutenção diária.
+
 ### Estatísticas descritivas
 
 **Tabela 6 — Estatísticas descritivas de dias desde a última atualização**
@@ -221,6 +229,8 @@ Analisando o ranking de estrelas versus dias desde a última atualização, obse
 
 ## 3.5 RQ05 — Sistemas populares são escritos nas linguagens mais populares?
 
+Validando a Hipótese 6 (H6), os repositórios mais estrelados são dominados pelas linguagens mais demandadas pela indústria contemporânea: Python (20,4%), TypeScript (16,2%) e JavaScript (11,2%). O protagonismo isolado do Python reflete a forte expansão de ecossistemas de Inteligência Artificial e Ciência de Dados. Paralelamente, o TypeScript assumindo a segunda posição geral indica uma forte consolidação da comunidade em adotar tipagem estática para garantir maior robustez em projetos de larga escala.
+
 ### Estatísticas descritivas
 
 **Tabela 8 — Ranking das 12 linguagens primárias mais frequentes**
@@ -236,6 +246,8 @@ Analisando o ranking de estrelas versus dias desde a última atualização, obse
 ---
 
 ## 3.6 RQ06 — Sistemas populares possuem um alto percentual de issues fechadas?
+
+A capacidade de resposta das equipes de manutenção é alta, o que confirma a Hipótese 5 (H5). A distribuição estatística é visivelmente assimétrica à esquerda, com uma mediana de 87,9% de issues fechadas e a grande maioria dos projetos concentrada na faixa de 80% a 100% de resolução. Essa alta taxa de fechamento é um forte indicador de maturidade na governança, sugerindo que projetos de sucesso possuem processos rigorosos de triagem e resolução de bugs para manter a comunidade engajada.
 
 ### Estatísticas descritivas
 
@@ -264,6 +276,7 @@ A segmentação por linguagem revela que TypeScript (**92,0%**), Go (**91,8%**),
 
 ## 3.7 Síntese cross-RQ
 
+A síntese transversal dos dados evidencia que a linguagem primária atua como um forte indicativo do comportamento e da dinâmica de engenharia da comunidade (RQ07). Observou-se que ecossistemas mais modernos, como TypeScript e Rust, destacam-se pelo altíssimo volume de colaboração externa (maiores medianas de Pull Requests), enquanto linguagens como TypeScript e Go lideram amplamente a adoção de entregas frequentes (maiores medianas de releases). Tais constatações comprovam que as ferramentas e a cultura idiomática de cada linguagem influenciam diretamente as métricas de evolução e manutenção do repositório.
 
 ---
 
