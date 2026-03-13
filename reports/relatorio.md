@@ -1,7 +1,5 @@
 # Caracterização dos 1.000 Repositórios Mais Populares do GitHub: Um Estudo Empírico Observacional
 
----
-
 # 1 Introdução
 
 ## 1.1 Contextualização
@@ -22,7 +20,9 @@ O estudo é guiado pelas seguintes questões de pesquisa (RQs):
 - **RQ 04:** Sistemas populares são atualizados com frequência?
 - **RQ 05:** Sistemas populares são escritos nas linguagens mais populares?
 - **RQ 06:** Sistemas populares possuem um alto percentual de issues fechadas?
-- **RQ 07:** Linguagens populares influenciam contribuição, releases e frequência de atualização? (**Bônus**)
+- **RQ 07 (Bônus):** Sistemas escritos em linguagens mais populares recebem
+mais contribuição externa, lançam mais releases e são atualizados com mais
+frequência?
 
 ## 1.4 Hipótese(s)
 
@@ -33,7 +33,7 @@ Com base na observação empírica do ecossistema open-source, foram formuladas 
 - **H3 (Releases):** Espera-se que a maioria dos projetos populares possua um histórico significativo de releases formais, sinalizando práticas de entrega contínua.
 - **H4 (Atualização):** Espera-se que projetos populares sejam frequentemente atualizados, refletindo manutenção ativa.
 - **H5 (Issues):** Espera-se que projetos populares possuam alto percentual de issues fechadas, indicando capacidade de resposta da equipe de manutenção.
-- **H6 (Linguagens):** Espera-se que as linguagens mais populares do mercado (Python, JavaScript, TypeScript) dominem entre os repositórios mais estrelados.
+- **H6 (Linguagens):** Espera-se que as linguagens que ocupam o **topo do ranking do GitHub Octoverse 202** (GitHub, 2025) — dominem entre os repositórios mais estrelados.
 
 ## 1.5 Objetivo (principal e específicos)
 
@@ -72,9 +72,12 @@ O experimento foi executado nas seguintes etapas sequenciais:
 
 Durante a execução do experimento, algumas decisões metodológicas e técnicas foram tomadas:
 
-1. **Tamanho da página:** Embora tenham sido testadas páginas maiores (50, 40 e 25 repositórios por requisição), essas configurações produziram respostas muito pesadas, levando a erros `502` na API do GitHub. Optou-se por fixar a coleta em **10 repositórios por página**, totalizando **100 páginas**, como compromisso entre desempenho e robustez.
-
-2. **Critério de exclusão (RQ06):** Repositórios sem nenhuma issue (40 do total) foram excluídos do cálculo percentual de fechamento de issues, resultando em uma base válida de 960 repositórios para essa métrica.
+| Decisão | Justificativa |
+|---------|---------------|
+| **Tamanho da página = 10** | Páginas maiores (25, 40, 50) causavam erros `502` na API. 10 repos/página × 100 páginas equilibra robustez e desempenho. |
+| **Exclusão RQ06** | 40 repositórios sem nenhuma issue foram excluídos do cálculo percentual, resultando em 960 repositórios válidos. |
+| **Referência temporal** | Todos os cálculos de idade e dias desde atualização usam **13 de março de 2026** como data base. |
+| **Ranking de linguagens populares (RQ05 / RQ07)** | Adotou-se como referência externa o **GitHub Octoverse 2025** (GitHub, 2025), cujo Top-10 de linguagens é: TypeScript, Python, JavaScript, Java, C#, PHP, Shell, C++, HCL e Go. |
 
 ## 2.3 Materiais utilizados
 
@@ -105,82 +108,76 @@ As métricas observadas no experimento foram definidas a partir das questões de
 | RQ03 | Releases | Quantidade total de releases registradas no repositório | contagem (inteiro) |
 | RQ04 | Frequência de atualização | Diferença entre a data de coleta (`collectedAt`) e a data da última atualização (`updatedAt`) | dias |
 | RQ05 | Linguagem primária | Linguagem principal associada ao repositório pela API do GitHub | categoria nominal |
-| RQ06 | Percentual de issues fechadas | Razão entre issues fechadas e total de issues (abertas + fechadas) × 100 | percentual (%) |
-| RQ07 | Métricas segmentadas por linguagem | Comparação cruzada das métricas de RQ02, RQ03 e RQ04 entre as linguagens primárias do top 10 | contagem, dias |
+| RQ06 | Percentual de issues fechadas | Razão entre issues fechadas e total de issues: (abertas + fechadas) × 100 | percentual (%) |
+| RQ07 | Métricas cruzadas por linguagem | RQ02, RQ03, RQ04 segmentadas por linguagem primária; comparação Top-10 Octoverse × demais | contagem, dias |
 
-**Nota sobre RQ04 — Frequência de atualização:** A métrica de frequência de atualização é calculada como a diferença, em dias, entre a data de coleta dos dados (`collectedAt`) e a data da última atualização do repositório (`updatedAt`), conforme registrado pela API do GitHub. Formalmente: `days_since_update = collectedAt − updatedAt`. Um valor de 0 indica que o repositório foi atualizado no mesmo dia da coleta. A referência temporal utilizada foi `13 de março de 2026`.
-
-**Nota sobre RQ06 — Percentual de issues fechadas:** A fórmula utilizada é:
-
-$$
-\text{Percentual de issues fechadas} = \frac{\text{issues fechadas}}{\text{issues abertas} + \text{issues fechadas}} \times 100
-$$
-
+> **Nota RQ04:** `days_since_update = 0` indica atualização no dia da coleta.
+>
+> **Nota RQ06:** Repositórios com 0 issues (40 ao total) foram excluídos, restando 960.
 ---
 
-# 3 Resultados e Discussão
+## 3 Resultados e Discussão
 
 Os resultados desta seção foram consolidados a partir dos **1.000 repositórios válidos** coletados com referência temporal reproduzível em `13 de março de 2026`. Para cada questão de pesquisa, apresentam-se as estatísticas descritivas, visualizações gráficas, discussão interpretativa e, quando aplicável, análises complementares.
 
 ---
 
-## 3.1 RQ01 — Sistemas populares são maduros/antigos?
+### 3.1 RQ01 — Sistemas populares são maduros/antigos?
 
 A análise da distribuição de idade confirma a Hipótese 1 (H1), revelando que a consolidação de um repositório no GitHub demanda tempo. Com uma mediana de 8,33 anos e o terceiro quartil atingindo 11,33 anos, fica evidente que o sucesso não é imediato. Projetos populares são, em sua esmagadora maioria, maduros, necessitando de quase uma década de desenvolvimento contínuo para construir uma base de usuários, estabelecer confiança e acumular a comunidade necessária para alcançar o topo do ranking.
 
-### Estatísticas descritivas
-
-**Tabela 1 — Estatísticas descritivas da idade (em anos)**
-
-
-**Tabela 2 — Distribuição por faixa de idade**
-
-
-### Visualizações
+#### Visualizações — RQ01
 
 ![Distribuição de idade dos repositórios](figures/rq01_repository_age_distribution.png)
 
-### Discussão
+#### Discussão RQ01
 
+**Confronto com H1:** A hipótese previa que os sistemas mais populares seriam
+maduros, com vários anos de desenvolvimento. Os dados **confirmam H1**: a
+mediana de idade é de **8,33 anos**, o que indica que os repositórios do
+Top-1000 foram, em sua maioria, criados entre 2015 e 2018. A concentração
+no intervalo de 5 a 11 anos (Q1–Q3) reforça que o acúmulo de estrelas é um
+processo gradual — repositórios precisam de tempo considerável para
+construir comunidade e reputação.
 
----
-
-## 3.2 RQ02 — Sistemas populares recebem muita contribuição externa?
+### 3.2 RQ02 — Sistemas populares recebem muita contribuição externa?
 
 A Hipótese 2 (H2) é fortemente validada pelos dados, visto que apenas 1,3% dos repositórios não possuem Pull Requests aceitas. A concentração de dados (mesmo em escala logarítmica) demonstra que a imensa maioria dos sistemas recebe um volume massivo de contribuições externas. Isso consolida a premissa de que o modelo descentralizado (pull-based development) não é apenas comum, mas um pilar essencial de escalabilidade e manutenção para repositórios de alto impacto.
 
-### Estatísticas descritivas
-
-**Tabela 3 — Estatísticas descritivas de PRs aceitas**
-
-
-### Visualizações
+#### Visualizações — RQ02
 
 ![Distribuição de pull requests aceitas](figures/rq02_pull_requests_distribution.png)
 
-### Discussão
+#### Discussão RQ02
 
+**Confronto com H2:** A hipótese esperava alta taxa de contribuição externa.
+Os dados **confirmam H2**: a mediana de **738 PRs aceitas** é um valor
+expressivo, indicando que a maioria dos projetos populares conta com
+centenas de contribuições incorporadas ao código-base. A amplitude
+interquartil é notável (Q1 ≈ 172, Q3 ≈ 3 201), isso demonstra que, embora a maioria dos repositórios receba um volume significativo de PRs, existe uma variação substancial, com alguns projetos acumulando milhares de contribuições, enquanto outros se mantêm em patamares mais modestos
 
 ---
 
-## 3.3 RQ03 — Sistemas populares lançam releases com frequência?
+### 3.3 RQ03 — Sistemas populares lançam releases com frequência?
 
 A adoção de releases apresenta um comportamento polarizado que responde parcialmente à Hipótese 3 (H3). Enquanto a maior categoria é a de repositórios com "Muitas (100+)" releases (342 projetos, indicando fortes práticas de entrega contínua), um grupo expressivo de 295 repositórios não possui nenhuma release.
 
-### Estatísticas descritivas
-
-**Tabela 4 — Estatísticas descritivas de releases**
-
-
-**Tabela 5 — Distribuição por faixa de releases**
-
-
-### Visualizações
+#### Visualizações — RQ03
 
 ![Distribuição de releases](figures/rq03_releases_distribution.png)
 
-### Discussão
+#### Discussão RQ03
 
+**Confronto com H3:** A hipótese esperava que a maioria possuísse histórico
+significativo de releases formais. Os dados **confirmam parcialmente H3**: a
+mediana é positiva (≈ 40), porém há uma **polarização** expressiva — quase
+30 % dos repositórios não possuem nenhuma release, enquanto mais de 34 %
+possuem acima de 100. Isso indica que o lançamento de releases formais é
+uma prática que depende fortemente do tipo de projeto e do ecossistema: projetos
+Go e TypeScript, por exemplo, adotam versionamento semântico e publicam em
+registros de pacotes (npm, Go Modules), enquanto awesome lists, tutoriais e
+repositórios de documentação não utilizam releases como mecanismo de
+distribuição.
 
 ### Análise complementar: Repositórios sem releases
 
@@ -188,11 +185,14 @@ Para compreender melhor o grupo de **295 repositórios** sem nenhuma release, fo
 
 ![Linguagens em repositórios sem releases](figures/rq03_zero_release_languages.png)
 
-A distribuição de linguagens entre repositórios sem releases difere significativamente da distribuição geral: categorias como Unknown e Jupyter Notebook estão sobre-representadas, sugerindo que muitos desses repositórios são coleções de documentação, dados, *awesome lists* ou tutoriais — projetos que, por natureza, não utilizam releases formais como mecanismo de distribuição.
-
-Entre os 30 repositórios sem releases com maior número de estrelas, observam-se tanto projetos de documentação e curadoria (como *awesome lists*, guias de estudo) quanto projetos de software propriamente dito que utilizam estratégias alternativas de distribuição (como Docker images ou instalação via pip/npm sem releases no GitHub).
-
-A distribuição de releases segmentada por linguagem revela que TypeScript e Go apresentam as maiores proporções de repositórios com 100+ releases, coerente com ecossistemas que incentivam versionamento semântico e publicação frequente em registros de pacotes.
+Os 295 repositórios sem releases apresentam sobre-representação de
+categorias como *Unknown* (sem linguagem detectável) e *Jupyter Notebook*,
+indicando que se tratam majoritariamente de coleções de documentação, dados,
+awesome lists ou tutoriais — projetos que, por natureza, não utilizam
+releases formais. Entre os 30 mais estrelados sem releases, observam-se
+tanto projetos de curadoria quanto projetos de software que adotam
+estratégias alternativas de distribuição (Docker images, `pip`,
+`npm` sem releases no GitHub).
 
 ---
 
@@ -200,30 +200,19 @@ A distribuição de releases segmentada por linguagem revela que TypeScript e Go
 
 A Hipótese 4 (H4) é confirmada de forma contundente: o ecossistema de repositórios populares é extremamente dinâmico e ativamente mantido. Impressionantes 98,7% dos projetos apresentaram atualizações no mesmo dia da coleta (mediana de 0,0 dias), e todo o restante (1,3%) foi atualizado no intervalo de uma semana. Isso demonstra inequivocamente que a alta visibilidade na plataforma exige e reflete uma atividade ininterrupta de manutenção diária.
 
-### Estatísticas descritivas
-
-**Tabela 6 — Estatísticas descritivas de dias desde a última atualização**
-
-
-**Tabela 7 — Distribuição por faixa de atualização**
-
-
 ### Visualizações
 
 ![Frequência de atualização](figures/rq04_update_frequency.png)
 
 ### Discussão
 
-
-### Análise complementar: Repositórios não atualizados no dia da coleta
-
-Os **13 repositórios** que não foram atualizados no dia da coleta merecem análise individual para identificar possíveis padrões.
-
-![Repositórios não atualizados recentemente](figures/rq04_not_recently_updated.png)
-
-A tabela acima detalha os 13 repositórios com `days_since_update > 0`, incluindo ranking por estrelas, linguagem, dias desde a última atualização, PRs, releases e contribuidores. Entre eles encontram-se projetos notáveis como:
-
-Analisando o ranking de estrelas versus dias desde a última atualização, observa-se que os repositórios não atualizados recentemente tendem a ocupar posições intermediárias ou inferiores no ranking (posições 365–828), sugerindo que repositórios no topo absoluto mantêm atualização mais consistente.
+**Confronto com H4:** A hipótese esperava atualização frequente. Os dados
+**confirmam fortemente H4**: impressionantes **98,7 %** dos repositórios
+foram atualizados no exato dia da coleta. Os 13
+repositórios restantes ocupam posições intermediárias a inferiores no ranking
+de estrelas (posições 365–828), sugerindo que a manutenção quase diária é
+um pré-requisito implícito para permanecer no topo absoluto de
+popularidade.
 
 ---
 
@@ -235,6 +224,21 @@ Validando a Hipótese 6 (H6), os repositórios mais estrelados são dominados pe
 
 **Tabela 8 — Ranking das 12 linguagens primárias mais frequentes**
 
+| Rank | Linguagem | Repositórios | % |
+| --- | --- | --- | --- |
+| 1 | Python | 204 | 20,4% |
+| 2 | TypeScript | 162 | 16,2% |
+| 3 | Outras | 119 | 11,9% |
+| 4 | JavaScript | 112 | 11,2% |
+| 5 | Unknown | 95 | 9,5% |
+| 6 | Go | 76 | 7,6% |
+| 7 | Rust | 55 | 5,5% |
+| 8 | C++ | 46 | 4,6% |
+| 9 | Java | 46 | 4,6% |
+| 10 | Jupyter Notebook | 23 | 2,3% |
+| 11 | C | 23 | 2,3% |
+| 12 | Shell | 22 | 2,2% |
+| 13 | HTML | 17 | 1,7% |
 
 ### Visualizações
 
@@ -242,6 +246,31 @@ Validando a Hipótese 6 (H6), os repositórios mais estrelados são dominados pe
 
 ### Discussão
 
+**Confronto com H6:** A hipótese esperava que as linguagens do topo do
+**GitHub Octoverse 2025** dominassem entre os repositórios mais estrelados.
+
+Os dados **confirmam parcialmente H6**, com ressalvas importantes:
+
+1. **Python, TypeScript e JavaScript** ocupam as três primeiras posições
+ tanto no Top-1000 de estrelas quanto entre as cinco primeiras do
+ Octoverse, embora a **ordem difira**: Python lidera no Top-1000 (20,4 %),
+ enquanto Typescript lidera no Octoverse.
+
+2. **Go** apresenta sobre-representação expressiva: é a 5ª linguagem no
+ Top-1000 (7,6 %), mas apenas a 10ª no Octoverse.
+
+3. **Rust**, embora **fora do Top-10 do Octoverse**, aparece como 6ª
+ linguagem no Top-1000 (5,5 %).
+
+4. **C# e PHP** estão **sub-representados** no Top-1000 em relação ao
+ Octoverse (C# é #5 no Octoverse mas não aparece no Top #10 do Top-1000; PHP é #7 mas
+ praticamente ausente do topo de estrelas).
+
+**Conclusão** As linguagens mais populares do Octoverse de fato
+dominam o Top-1000 de estrelas (~80 % dos repositórios são escritos em
+linguagens do Top-10), porém a **ordem de predominância** difere, com
+destaque para a sobre-representação de Python (efeito IA), Go (efeito
+cloud-native) e Rust (efeito hype/engajamento comunitário).
 
 ---
 
@@ -249,22 +278,24 @@ Validando a Hipótese 6 (H6), os repositórios mais estrelados são dominados pe
 
 A capacidade de resposta das equipes de manutenção é alta, o que confirma a Hipótese 5 (H5). A distribuição estatística é visivelmente assimétrica à esquerda, com uma mediana de 87,9% de issues fechadas e a grande maioria dos projetos concentrada na faixa de 80% a 100% de resolução. Essa alta taxa de fechamento é um forte indicador de maturidade na governança, sugerindo que projetos de sucesso possuem processos rigorosos de triagem e resolução de bugs para manter a comunidade engajada.
 
-### Estatísticas descritivas
-
-**Base válida:** 960 repositórios (40 excluídos por ausência de issues).
-
-**Tabela 9 — Estatísticas descritivas do percentual de issues fechadas**
-
-
-**Tabela 10 — Distribuição por faixa de percentual de issues fechadas**
-
-
-### Visualizações
+### Visualizações - RQ06
 
 ![Percentual de issues fechadas](figures/rq06_closed_issues_percentage.png)
 
-### Discussão
+### Discussão - RQ06
 
+**Confronto com H5:** A hipótese esperava alto percentual de issues fechadas.
+Os dados **confirmam H5**: a mediana de **87,88 %** indica que o repositório
+popular típico resolve quase 9 em cada 10 issues reportadas. A segmentação
+por linguagem revela variação: TypeScript (92,0 %), Go (91,8 %), JavaScript
+(91,0 %) e Java (90,9 %) ficam acima da mediana geral, enquanto Jupyter
+Notebook (72,2 %) e Unknown (81,1 %) ficam abaixo — reflexo do perfil
+distinto desses projetos (documentação/curadoria, com issues menos
+estruturadas).
+
+Esse resultado sugere que a **capacidade de triagem e fechamento de issues
+é uma característica definidora** de projetos populares, independentemente
+da linguagem.
 
 ### Análise complementar: Relação com linguagem, idade e contribuidores
 
@@ -274,14 +305,13 @@ A segmentação por linguagem revela que TypeScript (**92,0%**), Go (**91,8%**),
 
 ---
 
-## 3.7 Síntese cross-RQ
+## 3.7  RQ07 (Bônus) — Sistemas escritos em linguagens mais populares recebem mais contribuição externa, lançam mais releases e são atualizados com mais frequência?
 
 A síntese transversal dos dados evidencia que a linguagem primária atua como um forte indicativo do comportamento e da dinâmica de engenharia da comunidade (RQ07). Observou-se que ecossistemas mais modernos, como TypeScript e Rust, destacam-se pelo altíssimo volume de colaboração externa (maiores medianas de Pull Requests), enquanto linguagens como TypeScript e Go lideram amplamente a adoção de entregas frequentes (maiores medianas de releases). Tais constatações comprovam que as ferramentas e a cultura idiomática de cada linguagem influenciam diretamente as métricas de evolução e manutenção do repositório.
 
 ---
 
 # 4 Insights Adicionais
-
 
 ## 4.1 Perfil de repositórios "não-software"
 
@@ -292,7 +322,6 @@ A análise dos **295 repositórios sem releases** (RQ03) revelou um subgrupo sig
 - Esses repositórios apresentam medianas de PRs significativamente menores (**129,0** para Unknown, **88,0** para Jupyter Notebook) em comparação com projetos de engenharia, confirmando um perfil de atividade distinto.
 
 Essa observação levanta uma questão metodológica relevante: estudos empíricos baseados nos repositórios mais estrelados do GitHub devem considerar que aproximadamente **10–15%** da amostra pode não representar projetos de engenharia de software no sentido estrito.
-
 
 ---
 
@@ -332,7 +361,6 @@ Em relação ao modelo de colaboração (RQ02 e RQ06), o trabalho de Zhang et al
 
 Por fim, a constatação da Seção 4.1 — de que 10% a 15% dos repositórios mais populares são focados em curadoria de conhecimento (como *awesome lists*) e não em engenharia de software tradicional — dialoga diretamente com os desafios metodológicos documentados na literatura contemporânea. Como apontado por Wessel et al. (2023) ao filtrarem rigorosamente repositórios para analisar o impacto de automações no processo de *Pull Requests*, assumir que qualquer repositório estrelado possui o mesmo perfil de desenvolvimento e ciclo de *releases* (RQ03) pode enviesar análises de engenharia de software. Nossos achados quantificam esse fenômeno no atual top 1.000, reiterando a necessidade premente de aplicar heurísticas de exclusão na seleção de amostras em estudos empíricos modernos.
 
-
 ---
 
 # Referências
@@ -342,6 +370,5 @@ AIT, A.; IZQUIERDO, J. L. C.; CABOT, J. An empirical study on the survival rate 
 WESSEL, M. et al. GitHub Actions: The Impact on the Pull Request Process. **Empirical Software Engineering**, v. 28, n. 6, p. 1-38, 2023.
 
 ZHANG, X. et al. Pull request latency explained: an empirical overview. **Empirical Software Engineering**, v. 27, n. 6, p. 1-35, 2022.
-
 
 ---
