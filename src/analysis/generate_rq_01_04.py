@@ -206,27 +206,22 @@ def plot_rq04_update_frequency(df: pd.DataFrame, reference_date: pd.Timestamp) -
     category_counts = frequency_category.value_counts().reindex(ordered_labels, fill_value=0)
     category_percent = (category_counts / category_counts.sum() * 100).round(2)
 
-    fig, axes = plt.subplots(1, 2, figsize=(14, 5.5))
+    fig, ax = plt.subplots(figsize=(10, 5.5))
 
     sns.barplot(
         x=category_percent.values,
         y=category_percent.index,
         palette="Blues_r",
-        ax=axes[0],
+        ax=ax,
         hue=category_percent.index,
         legend=False,
     )
-    axes[0].set_title("Percentual por faixa de atualização")
-    axes[0].set_xlabel("Percentual de repositórios (%)")
-    axes[0].set_ylabel("Faixa de atualização")
-    axes[0].grid(alpha=0.3, axis="x")
+    ax.set_title("Percentual por faixa de atualização")
+    ax.set_xlabel("Percentual de repositórios (%)")
+    ax.set_ylabel("Faixa de atualização")
+    ax.grid(alpha=0.3, axis="x")
     for index, value in enumerate(category_percent.values):
-        axes[0].text(value + 0.3, index, f"{value:.1f}%", va="center")
-
-    sns.boxplot(x=days_since_update, color="#DD8452", ax=axes[1])
-    axes[1].set_title("Box Plot de dias desde a última atualização")
-    axes[1].set_xlabel("Dias desde a última atualização")
-    axes[1].grid(alpha=0.3)
+        ax.text(value + 0.3, index, f"{value:.1f}%", va="center")
 
     fig.suptitle(
         (

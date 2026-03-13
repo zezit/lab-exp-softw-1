@@ -106,64 +106,6 @@ def generate_table(df: pd.DataFrame, reference_date: pd.Timestamp):
     print(f"✔ Tabela salva em {path}")
 
 
-def generate_scatter(df: pd.DataFrame):
-    """Scatter: star_rank (x) vs days_since_update (y), destaques anotados."""
-    recent = df[df["days_since_update"] == 0]
-    not_recent = df[df["days_since_update"] > 0]
-
-    fig, ax = plt.subplots(figsize=(12, 6))
-
-    ax.scatter(
-        recent["star_rank"],
-        recent["days_since_update"],
-        alpha=0.3,
-        s=20,
-        color="#4472C4",
-        label=f"Atualizados no dia da coleta (n={len(recent)})",
-        zorder=2,
-    )
-    ax.scatter(
-        not_recent["star_rank"],
-        not_recent["days_since_update"],
-        s=80,
-        color="#E74C3C",
-        edgecolors="black",
-        linewidths=0.8,
-        marker="D",
-        label=f"NÃO atualizados no dia da coleta (n={len(not_recent)})",
-        zorder=3,
-    )
-
-    for _, row in not_recent.iterrows():
-        ax.annotate(
-            row["name"],
-            (row["star_rank"], row["days_since_update"]),
-            textcoords="offset points",
-            xytext=(8, 4),
-            fontsize=7,
-            fontstyle="italic",
-            color="#333333",
-            arrowprops=dict(arrowstyle="-", color="#999999", lw=0.5),
-        )
-
-    ax.set_xlabel("Posição no ranking de estrelas", fontsize=12)
-    ax.set_ylabel("Dias desde a última atualização", fontsize=12)
-    ax.set_title(
-        "RQ4 — Posição no ranking vs. dias sem atualização\n"
-        "Repositórios raramente atualizados estão na metade inferior do ranking",
-        fontsize=13,
-        fontweight="bold",
-    )
-    ax.legend(loc="upper left", fontsize=9)
-    ax.set_xlim(0, len(df) + 20)
-
-    fig.tight_layout()
-    path = FIG_DIR / "rq04_rank_vs_update.png"
-    fig.savefig(path, dpi=DPI, bbox_inches="tight")
-    plt.close(fig)
-    print(f"✔ Scatter salvo em {path}")
-
-
 def print_analysis(df: pd.DataFrame, reference_date: pd.Timestamp):
     """Imprime análise dos repos não atualizados recentemente."""
     not_recent = df[df["days_since_update"] > 0].sort_values(
@@ -221,7 +163,6 @@ def print_analysis(df: pd.DataFrame, reference_date: pd.Timestamp):
 def main():
     df, reference_date = load_and_prepare()
     generate_table(df, reference_date)
-    generate_scatter(df)
     print_analysis(df, reference_date)
 
 

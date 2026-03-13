@@ -4,7 +4,6 @@ linguagem, idade do repositório e número de contribuidores."""
 from pathlib import Path
 
 import matplotlib.pyplot as plt
-import numpy as np
 import pandas as pd
 import seaborn as sns
 from scipy import stats
@@ -81,105 +80,6 @@ def plot_issues_by_language(df: pd.DataFrame) -> None:
     print(f"  ✓ Salvo: {out}")
 
 
-def plot_issues_vs_age(df: pd.DataFrame) -> None:
-    fig, ax = plt.subplots(figsize=(10, 6))
-
-    palette = {"0–2 anos": "#e41a1c", "2–5 anos": "#377eb8", "5–10 anos": "#4daf4a", "10+ anos": "#984ea3"}
-
-    sns.scatterplot(
-        data=df,
-        x="age_years",
-        y="closed_issues_pct",
-        hue="age_range",
-        palette=palette,
-        alpha=0.5,
-        s=20,
-        ax=ax,
-    )
-
-    rho, pval = stats.spearmanr(df["age_years"], df["closed_issues_pct"])
-
-    z = np.polyfit(df["age_years"], df["closed_issues_pct"], 1)
-    x_line = np.linspace(df["age_years"].min(), df["age_years"].max(), 200)
-    ax.plot(x_line, np.polyval(z, x_line), color="red", linewidth=2, linestyle="--", label="Regressão linear")
-
-    ax.set_title("RQ6 — % de Issues Fechadas vs. Idade do Repositório", fontsize=14, fontweight="bold")
-    ax.set_xlabel("Idade (anos)", fontsize=12)
-    ax.set_ylabel("% de Issues Fechadas", fontsize=12)
-    ax.set_ylim(-5, 105)
-
-    ax.text(
-        0.02, 0.02,
-        f"Spearman ρ = {rho:.4f}  (p = {pval:.2e})",
-        transform=ax.transAxes, fontsize=11,
-        verticalalignment="bottom",
-        bbox=dict(boxstyle="round,pad=0.3", facecolor="wheat", alpha=0.8),
-    )
-
-    ax.legend(title="Faixa de idade", loc="upper right")
-    fig.tight_layout()
-    out = FIGURES_DIR / "rq06_issues_vs_age.png"
-    fig.savefig(out, dpi=300)
-    plt.close(fig)
-    print(f"  ✓ Salvo: {out}")
-
-
-def plot_issues_vs_contributors(df: pd.DataFrame) -> None:
-    subset = df[df["mentionable_users_count"] > 0].copy()
-
-    top5 = subset["primaryLanguage"].value_counts().nlargest(5).index.tolist()
-    subset["lang_group"] = subset["primaryLanguage"].apply(lambda x: x if x in top5 else "Outros")
-
-    fig, ax = plt.subplots(figsize=(10, 6))
-
-    palette = sns.color_palette("tab10", n_colors=6)
-    lang_labels = top5 + ["Outros"]
-    color_map = {lang: palette[i] for i, lang in enumerate(lang_labels)}
-
-    sns.scatterplot(
-        data=subset,
-        x="mentionable_users_count",
-        y="closed_issues_pct",
-        hue="lang_group",
-        hue_order=lang_labels,
-        palette=color_map,
-        alpha=0.5,
-        s=20,
-        ax=ax,
-    )
-
-    ax.set_xscale("log")
-
-    rho, pval = stats.spearmanr(subset["mentionable_users_count"], subset["closed_issues_pct"])
-
-    log_x = np.log10(subset["mentionable_users_count"])
-    z = np.polyfit(log_x, subset["closed_issues_pct"], 1)
-    x_line = np.logspace(np.log10(subset["mentionable_users_count"].min()),
-                         np.log10(subset["mentionable_users_count"].max()), 200)
-    ax.plot(x_line, np.polyval(z, np.log10(x_line)), color="red", linewidth=2, linestyle="--",
-            label="Regressão linear")
-
-    ax.set_title("RQ6 — % de Issues Fechadas vs. Contribuidores", fontsize=14, fontweight="bold")
-    ax.set_xlabel("Contribuidores (escala log)", fontsize=12)
-    ax.set_ylabel("% de Issues Fechadas", fontsize=12)
-    ax.set_ylim(-5, 105)
-
-    ax.text(
-        0.02, 0.02,
-        f"Spearman ρ = {rho:.4f}  (p = {pval:.2e})",
-        transform=ax.transAxes, fontsize=11,
-        verticalalignment="bottom",
-        bbox=dict(boxstyle="round,pad=0.3", facecolor="wheat", alpha=0.8),
-    )
-
-    ax.legend(title="Linguagem", loc="upper right", fontsize=9)
-    fig.tight_layout()
-    out = FIGURES_DIR / "rq06_issues_vs_contributors.png"
-    fig.savefig(out, dpi=300)
-    plt.close(fig)
-    print(f"  ✓ Salvo: {out}")
-
-
 def print_statistics(df: pd.DataFrame) -> None:
     print("\n" + "=" * 60)
     print("ESTATÍSTICAS — RQ6: Correlações e Rankings")
@@ -225,8 +125,6 @@ def main() -> None:
 
     print("Gerando gráficos RQ6 extras:")
     plot_issues_by_language(df)
-    plot_issues_vs_age(df)
-    plot_issues_vs_contributors(df)
     print_statistics(df)
 
 

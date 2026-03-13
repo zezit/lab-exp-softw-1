@@ -85,109 +85,6 @@ def plot_zero_release_languages(df: pd.DataFrame, df_zero: pd.DataFrame) -> None
     save_figure(fig, "rq03_zero_release_languages.png")
 
 
-def plot_top_zero_release_repos(df_zero: pd.DataFrame) -> None:
-    """Gráfico 2: tabela com os top 30 repos sem releases."""
-    top30 = (
-        df_zero.sort_values("stargazerCount", ascending=False)
-        .head(30)
-        .reset_index(drop=True)
-    )
-
-    table_data = []
-    cell_colors = []
-    non_sw_color = "#FDDEDE"
-    normal_color = "#FFFFFF"
-    header_color = "#4C72B0"
-
-    for i, row in top30.iterrows():
-        rank = i + 1
-        lang = str(row["primaryLanguage"])
-        stars = f"{int(row['stargazerCount']):,}"
-        prs = f"{int(row['pullRequests_count']):,}"
-        users = f"{int(row['mentionable_users_count']):,}"
-        name = str(row["name"])[:30]
-
-        table_data.append([rank, name, lang, stars, prs, users])
-
-        bg = non_sw_color if is_non_software(lang) else normal_color
-        cell_colors.append([bg] * 6)
-
-    col_labels = ["#", "Nome", "Linguagem", "Stars", "PRs", "Contribuidores"]
-
-    fig, ax = plt.subplots(figsize=(12, 10))
-    ax.axis("off")
-
-    table = ax.table(
-        cellText=table_data,
-        colLabels=col_labels,
-        cellColours=cell_colors,
-        colColours=[header_color] * 6,
-        loc="center",
-        cellLoc="center",
-    )
-
-    table.auto_set_font_size(False)
-    table.set_fontsize(8)
-    table.scale(1, 1.3)
-
-    for (row, col), cell in table.get_celld().items():
-        if row == 0:
-            cell.set_text_props(color="white", fontweight="bold")
-        if col == 1:
-            cell.set_text_props(ha="left")
-            cell._loc = "left"
-
-    ax.set_title(
-        "RQ03 — Top 30 repositórios populares sem releases\n"
-        "(destacados em vermelho: prováveis repos não-software)",
-        fontsize=12,
-        fontweight="bold",
-        pad=20,
-    )
-
-    fig.tight_layout()
-    save_figure(fig, "rq03_zero_release_top_repos.png")
-
-
-def plot_releases_by_language(df: pd.DataFrame) -> None:
-    """Gráfico 3: barras empilhadas normalizadas — categorias de releases por linguagem."""
-    top8 = df["primaryLanguage"].value_counts().head(8).index.tolist()
-    df_top = df[df["primaryLanguage"].isin(top8)].copy()
-
-    labels = ["0", "1–10", "11–100", "100+"]
-    df_top["release_cat"] = pd.cut(
-        df_top["releases_count"],
-        bins=[-0.1, 0, 10, 100, float("inf")],
-        labels=labels,
-        include_lowest=True,
-    )
-
-    ct = pd.crosstab(df_top["primaryLanguage"], df_top["release_cat"], normalize="index") * 100
-    ct = ct.reindex(columns=labels, fill_value=0)
-    ct = ct.loc[top8]
-
-    colors = ["#C44E52", "#F0A050", "#55A868", "#4C72B0"]
-    fig, ax = plt.subplots(figsize=(10, 6))
-
-    bottom = np.zeros(len(ct))
-    for i, cat in enumerate(labels):
-        values = ct[cat].values
-        ax.barh(ct.index, values, left=bottom, label=cat, color=colors[i], alpha=0.85)
-        for j, (v, b) in enumerate(zip(values, bottom)):
-            if v > 5:
-                ax.text(b + v / 2, j, f"{v:.0f}%", ha="center", va="center", fontsize=8, color="white", fontweight="bold")
-        bottom += values
-
-    ax.set_xlabel("Percentual de repositórios (%)")
-    ax.set_title("RQ03 — Categorias de releases por linguagem (top 8)")
-    ax.legend(title="Releases", loc="lower right")
-    ax.grid(alpha=0.3, axis="x")
-    ax.invert_yaxis()
-
-    fig.tight_layout()
-    save_figure(fig, "rq03_releases_by_language.png")
-
-
 def print_console_summary(df: pd.DataFrame, df_zero: pd.DataFrame) -> None:
     total = len(df)
     n_zero = len(df_zero)
@@ -227,8 +124,6 @@ def main() -> None:
 
     print_console_summary(df, df_zero)
     plot_zero_release_languages(df, df_zero)
-    plot_top_zero_release_repos(df_zero)
-    plot_releases_by_language(df)
 
     print("\nConcluído: visualizações extras de RQ03 geradas.")
 
