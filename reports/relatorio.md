@@ -287,22 +287,48 @@ Essa observação levanta uma questão metodológica relevante: estudos empíric
 
 ## 5.1 Tomada de decisão
 
+- **Gestão Ativa e Governança:** O alto índice de issues fechadas (mediana de 87,88%) demonstra que projetos de sucesso exigem um esforço contínuo de triagem e manutenção. Equipes que desejam abrir o código de seus sistemas precisam alocar recursos específicos para a gestão da comunidade, garantindo que dúvidas e bugs sejam respondidos rapidamente.
+
+- **Adoção de Stack Tecnológica:** A dominância de Python, TypeScript e JavaScript sugere que a escolha da linguagem primária é um fator estratégico. Projetos que utilizam essas linguagens tendem a atrair um volume maior de contribuições externas, o que é vital para a sustentabilidade do repositório a longo prazo.
+
+- **Maturidade como Estratégia de Longo Prazo:** Com a mediana de idade dos projetos superando os 8 anos, fica evidente que o sucesso no open-source é um processo cumulativo. O planejamento do ciclo de vida do software deve contemplar um amadurecimento gradual, sem a expectativa de tração imediata.
+
+- **Adequação de Processos de Release:** A variação na frequência de releases (especialmente a alta frequência em projetos Go e TypeScript) indica que a adoção de práticas de integração e entrega contínuas (CI/CD) deve ser moldada conforme a cultura do ecossistema da linguagem escolhida.
 
 ## 5.2 Sugestões futuras
 
+- **Filtragem Heurística de Repositórios:** Como os dados revelaram uma porção significativa de repositórios de "não-software" (como awesome lists e tutoriais), trabalhos futuros podem desenvolver e aplicar filtros automáticos para excluir curadorias de conhecimento, refinando as métricas estritamente para engenharia de software.
+
+- **Análise de Qualidade e Tempo (Lead Time):** Em vez de medir apenas o volume absoluto de Pull Requests e Issues, estudos futuros podem investigar o tempo médio para o fechamento (Merge/Close) desses artefatos, avaliando a agilidade e a eficiência das equipes de manutenção.
+
+- **Impacto da Automação (CI/CD):** Investigar a correlação entre a presença de pipelines automatizados (como GitHub Actions) e a frequência de lançamentos (releases) ou a taxa de aceitação de contribuições externas.
+
+- **Expansão da Amostra:** Ampliar a coleta para os 10.000 repositórios mais populares para verificar se as tendências de maturidade e gestão de issues se mantêm em camadas menos visíveis da plataforma.
 
 ## 5.3 Resultado conclusivo sucinto
 
 Este estudo analisou os 1.000 repositórios mais populares do GitHub (coleta em 13/03/2026) e encontrou evidências de que esses projetos são, em sua maioria: **maduros** (mediana de 8,33 anos), **colaborativos** (mediana de 738 PRs aceitas), **ativamente mantidos** (98,7% atualizados no dia da coleta), com **alta resolução de issues** (mediana de 87,88% fechadas) e **dominados por Python, TypeScript e JavaScript** (47,8% da amostra). A prática de releases formais é adotada pela maioria, mas com polarização significativa (29,5% sem releases vs. 34,2% com 100+). TypeScript se destaca como o ecossistema com maior throughput colaborativo (mediana de 2.528,5 PRs e 157,5 releases). A análise de contribuidores mencionáveis (mediana de 230) revelou que o tamanho da comunidade é um forte preditor do volume de contribuições, sugerindo retornos crescentes de escala na colaboração open-source.
 
-## 5.4 Confronto com literatura
+## 5.4 Confronto com a literatura
 
-Os resultados deste estudo podem ser contextualizados à luz de trabalhos prévios relevantes na área de Mineração de Repositórios de Software:
+Os resultados empíricos obtidos neste estudo corroboram e atualizam diversas observações clássicas presentes na literatura de Mineração de Repositórios de Software (MSR), ao mesmo tempo em que destacam nuances emergentes do ecossistema atual do GitHub.
+
+Em primeiro lugar, a descoberta detalhada na Seção 4.1 — de que uma parcela considerável (10% a 15%) dos repositórios mais populares não consiste em projetos de desenvolvimento de software tradicionais, mas sim em iniciativas de curadoria de conhecimento (*awesome lists*, tutoriais e repositórios sem linguagem primária definida) — confirma empiricamente as ressalvas de Kalliamvakou et al. (2014) em seu trabalho *"The Promises and Perils of Mining GitHub"*. Os autores alertam estruturalmente sobre o perigo metodológico de assumir que todo repositório no topo do ranking equivale a um sistema de engenharia de software, exigindo cautela e filtragem na seleção de amostras para estudos da área.
+
+No que tange à manutenção contínua, Borges et al. (2016), no artigo *"Understanding the Factors that Impact the Popularity of GitHub Repositories"*, apontam que a popularidade de um repositório está intrinsecamente atrelada à sua frequência de atualização. Os dados extraídos para responder à RQ04 validam de forma robusta essa premissa no cenário contemporâneo: 98,7% dos 1.000 repositórios analisados apresentaram atualizações no exato dia da coleta. Isso evidencia que a retenção de relevância (volume de estrelas) exige manutenção quase diária e gestão ativa por parte dos mantenedores.
+
+Por fim, a altíssima adoção do modelo de contribuição externa evidenciada na RQ02 (mediana de 738 *Pull Requests* aceitas por repositório) reforça as conclusões de Gousios et al. (2014) em *"Work Practices and Challenges in Pull-Based Development"*. O referencial teórico descreve como o modelo *pull-based* reduziu as barreiras de entrada para novos desenvolvedores. Os números consolidados nesta pesquisa atualizam essa visão, demonstrando que o modelo de *Pull Requests* não atua apenas como um facilitador, mas como o motor fundamental que sustenta a evolução, a triagem descentralizada e a escala colaborativa dos projetos open-source de maior impacto na atualidade.
 
 
 ---
 
 # Referências
+
+BORGES, H.; HORA, A.; VALENTE, M. T. Understanding the factors that impact the popularity of GitHub repositories. In: IEEE INTERNATIONAL CONFERENCE ON SOFTWARE MAINTENANCE AND EVOLUTION (ICSME), 32., 2016, Raleigh. **Proceedings** [...]. Raleigh: IEEE, 2016. p. 334-344.
+
+GOUSIOS, G. et al. Work practices and challenges in pull-based development: the contributor's perspective. In: INTERNATIONAL CONFERENCE ON SOFTWARE ENGINEERING (ICSE), 36., 2014, Hyderabad. **Proceedings** [...]. Hyderabad: ACM, 2014. p. 285-296.
+
+KALLIAMVAKOU, E. et al. The promises and perils of mining GitHub. In: WORKING CONFERENCE ON MINING SOFTWARE REPOSITORIES (MSR), 11., 2014, Hyderabad. **Proceedings** [...]. Hyderabad: ACM, 2014. p. 92-101.
 
 
 ---
