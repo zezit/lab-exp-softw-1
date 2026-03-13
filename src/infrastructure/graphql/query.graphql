@@ -27,6 +27,9 @@ query($cursor: String) {
           closedIssues: issues(first: 1, states: CLOSED) { # RQ 06
             totalCount
           }
+          mentionableUsers(first: 1) {
+            totalCount
+          }
         }
       }
     }

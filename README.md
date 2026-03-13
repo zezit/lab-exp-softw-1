@@ -238,6 +238,30 @@ Os dados serão salvos em `data/repos.csv`.
 python src/app.py --json --csv
 ```
 
+## Geração de visualizações (RQ01–RQ07)
+
+Com o ambiente virtual ativo na raiz do projeto, execute:
+
+```bash
+# Linux/macOS
+source .venv/bin/activate
+# Windows
+# .venv\Scripts\activate
+
+pip install -r requirements.txt
+python src/analysis/generate_rq_01_04.py
+python src/analysis/generate_rq_05_07.py
+```
+
+Arquivos gerados em `reports/figures/`:
+- `rq01_repository_age_distribution.png`
+- `rq02_pull_requests_distribution.png`
+- `rq03_releases_distribution.png`
+- `rq04_update_frequency.png`
+- `rq05_primary_languages_ranking.png`
+- `rq06_closed_issues_percentage.png`
+- `rq07_contribution_by_language.png`
+
 ---
 
 ## Troubleshooting
